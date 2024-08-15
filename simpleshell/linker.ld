@@ -5,7 +5,7 @@ SECTIONS
     .rodata : { *(.rodata .rodata.* .gnu.linkonce.r*) }
     PROVIDE(_data = .);
     .data : { *(.data .data.* .gnu.linkonce.d*) }
-    .bss (NOLOAD) : {
+    .bss (NOLOAD) : { 
         . = ALIGN(16);
         __bss_start = .;
         *(.bss .bss.*)

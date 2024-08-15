@@ -1,9 +1,9 @@
 // simpleshell.c
 #include "uart.h"
 #include "string.h"
-
+#include "mailbox.h"
 /*.global*/
-#define BUFFER_MAX_SIZE 5
+#define BUFFER_MAX_SIZE 10
 
 void read_command(char* buffer);
 void parse_command(char* buffer);
@@ -26,8 +26,9 @@ void read_command(char* buffer) {
   //uart_puts("[Waiting target's command]\n");
   uart_puts("# ");
   while (1) {
-    buffer[index] = uart_getc(); // get 對方之輸入
-    uart_send(buffer[index]); // send回去且-serial stdio會顯示在terminal
+    buffer[index] = uart_getc(); // 一個一個字元get 使用者之輸入存入buffer
+    //uart_puts("send back :");
+    uart_send(buffer[index]); // get到的字元send回去且顯示字元在terminal (-serial stdio)
     if (buffer[index] == '\n') {
       buffer[index] = '\0';
       buffer[index + 1] = '\n';
@@ -45,10 +46,32 @@ void parse_command(char* buffer) {
     //uart_puts("[Responding from host]\n");
     uart_puts("help  : list available commands\n");
     uart_puts("hello : print Hello World!\n");
+    uart_puts("info	: Get the hardware's information\n");
+    uart_puts("reboot	: reboot the device\n");
     // Add more commands here
-  } else if (strcmp(input_string, "hello") == 0) {
+  }
+  else if (strcmp(input_string, "hello") == 0) {
     uart_puts("Hello World!\n");
-  } else {
+  }
+  else if (strcmp(input_string, "reboot") == 0 ) {
+    uart_puts("reboot the device\n");
+  }
+  else if(strcmp(input_string, "info") == 0 ) {
+         if (mailbox_call()) {
+           Get_board_revision();
+           uart_puts("Board Revision = ");
+           uart_hex(mailbox[5]);
+           uart_puts("\r\n");
+           Get_ARM_MEM();
+           uart_puts("ARM memory base address = ");
+           uart_hex(mailbox[5]);
+           uart_puts("\r\n");
+           uart_puts("ARM memory size = ");
+           uart_hex(mailbox[6]);
+           uart_puts("\r\n");
+         }
+  }
+  else {
     uart_puts("Unknown command\n");
   }
 }

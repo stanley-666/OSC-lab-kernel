@@ -8,7 +8,7 @@ void main()
     uart_init();
     
     // say hello
-    uart_puts("Hello World!\n"); // put(send) string to AUX_MU_IO register
+    // uart_puts("Hello World!\n"); // put(send) string to AUX_MU_IO register
     
     shell();
     // echo everything back 等待對方裝置傳送的char且ack相同char回去
