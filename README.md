@@ -1,3 +1,7 @@
+Codes are based on NYCU OSC class's lab with some modifications and comments.
+Some of them are clean codes from [前人修過課的學長的筆記](https://github.com/KevinCodePlace/NYCU_Operating_System_Capstone_2023Spring).
+Read, understand and practice OS, C, bitwise operations, pointer and implement it by reading spec.
+
 # Environment
 ```
 BCM2837 
